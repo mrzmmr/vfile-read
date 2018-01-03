@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "xo": "xo --fix --space --no-esnext",
-    "tape": "tape test.js",
+    "tape": "blue-tape test.js",
     "report": "nyc report --reporter=text-lcov | coveralls",
     "pretest": "npm run xo",
     "test": "nyc npm run tape",
