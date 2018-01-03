@@ -50,9 +50,6 @@ function read(location, options, callback) {
       return callback(null, root.contents[0]);
     }
 
-    // If (parent) {
-    //   current = path.join(parent.path, current);
-    // }
     current = path.join(parent.path, current);
 
     if (options.ignores.indexOf(current) > -1) {
@@ -69,7 +66,7 @@ function read(location, options, callback) {
       parent.contents.push(node);
 
       if (stat.isDirectory()) {
-        return fs.readdir(current, options, function (err, files) {
+        return fs.readdir(current, function (err, files) {
           /* istanbul ignore if */
           if (err) {
             return callback(err);
