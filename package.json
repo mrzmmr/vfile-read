@@ -1,0 +1,46 @@
+{
+  "name": "vfile-read",
+  "version": "1.0.0",
+  "description": "Read file or directory into vfile.",
+  "main": "index.js",
+  "author": "Paul Zimmer",
+  "license": "MIT",
+  "scripts": {
+    "xo": "xo --fix --space --no-esnext",
+    "tape": "tape test.js",
+    "report": "nyc report --reporter=text-lcov | coveralls",
+    "pretest": "npm run xo",
+    "test": "nyc npm run tape",
+    "posttest": "rimraf ./foo ./baz"
+  },
+  "nyc": {},
+  "xo": {
+    "space": true,
+    "esnext": false,
+    "ignores": [
+      "test.js"
+    ]
+  },
+  "keywords": [
+    "virtual",
+    "file",
+    "directory",
+    "readFile",
+    "readdir",
+    "path",
+    "file-path"
+  ],
+  "repository": "mrzmmr/vfile-read",
+  "bugs": "https://github.com/mrzmmr/vfile-read/issues",
+  "dependencies": {
+    "vfile": "^2.3.0"
+  },
+  "devDependencies": {
+    "blue-tape": "^1.0.0",
+    "clone": "^2.1.1",
+    "coveralls": "^3.0.0",
+    "nyc": "^11.4.1",
+    "rimraf": "^2.6.2",
+    "xo": "^0.18.2"
+  }
+}
