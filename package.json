@@ -1,6 +1,6 @@
 {
   "name": "vfile-read",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Read file or directory into vfile.",
   "main": "index.js",
   "author": "Paul Zimmer",
