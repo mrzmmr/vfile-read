@@ -15,7 +15,7 @@ mkdirp.sync('./baz/bar')
 mkdirp.sync('./baz/foo')
 
 var baz = vfile({
-  path: 'baz',
+  path: './baz',
   contents: [
     vfile({path: 'baz/bar', contents: []}),
     vfile({path: 'baz/foo', contents: []})
@@ -23,7 +23,7 @@ var baz = vfile({
 })
 
 var foo = vfile({
-  path: 'foo',
+  path: './foo',
   contents: [
     vfile({
       path: 'foo/bar',
@@ -83,6 +83,14 @@ tape.test('using options', function (t) {
     })
   }).catch(t.fail)
   t.end()
+})
+
+tape.test('paths update correctly', function (t) {
+  read(path.join(process.cwd(), 'foo'), function (err, res1) {
+    t.ifError(err)
+    t.ok(res1.contents[0].path === path.join(process.cwd(), 'foo', 'bar'))
+    t.end()
+  })
 })
 
 tape.test('using string encoding option', function (t) {

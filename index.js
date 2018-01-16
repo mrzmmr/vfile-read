@@ -26,7 +26,7 @@ function read(location, options, callback) {
     });
   }
 
-  root = vfile({path: '.', contents: []});
+  root = vfile({contents: []});
   queue = [location, root];
   options = options || {};
 
@@ -50,7 +50,9 @@ function read(location, options, callback) {
       return callback(null, root.contents[0]);
     }
 
-    current = path.join(parent.path, current);
+    if (parent.path) {
+      current = path.join(parent.path, current);
+    }
 
     if (options.ignores.indexOf(current) > -1) {
       return recurse();
@@ -114,7 +116,7 @@ function readSync(location, options) {
   var file;
   var i;
 
-  root = vfile({path: '.', contents: []});
+  root = vfile({contents: []});
   queue = [location, root];
   options = options || {};
 
@@ -131,12 +133,15 @@ function readSync(location, options) {
     current = queue.shift();
     parent = queue.shift();
 
-    current = path.join(parent.path, current);
-    node = vfile({path: current, contents: []});
+    if (parent.path) {
+      current = path.join(parent.path, current);
+    }
 
     if (current && options.ignores.indexOf(current) > -1) {
       continue;
     }
+
+    node = vfile({path: current, contents: []});
 
     stat = fs.statSync(node.path);
     i = -1;
