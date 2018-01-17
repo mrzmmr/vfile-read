@@ -8,6 +8,7 @@ module.exports = read;
 module.exports.sync = readSync;
 
 function read(location, options, callback) {
+  var ignores;
   var queue;
   var root;
 
@@ -38,6 +39,7 @@ function read(location, options, callback) {
 
   options.ignores = [].concat(options.ignores);
   options.encoding = options.encoding || 'utf-8';
+  ignores = options.ignores;
 
   recurse();
 
@@ -54,7 +56,10 @@ function read(location, options, callback) {
       current = path.join(parent.path, current);
     }
 
-    if (options.ignores.indexOf(current) > -1) {
+    if (
+      ignores.indexOf(current) > -1 ||
+      ignores.indexOf(path.parse(current).base) > -1
+    ) {
       return recurse();
     }
 
@@ -106,6 +111,7 @@ function read(location, options, callback) {
 }
 
 function readSync(location, options) {
+  var ignores;
   var current;
   var parent;
   var queue;
@@ -128,6 +134,7 @@ function readSync(location, options) {
 
   options.ignores = [].concat(options.ignores);
   options.encoding = options.encoding || 'utf-8';
+  ignores = options.ignores;
 
   while (queue.length > 0) {
     current = queue.shift();
@@ -137,7 +144,12 @@ function readSync(location, options) {
       current = path.join(parent.path, current);
     }
 
-    if (current && options.ignores.indexOf(current) > -1) {
+    if (
+      !current ||
+      ignores.indexOf(current) > -1 ||
+      ignores.indexOf(path.parse(current).base) > -1
+    ) {
+    // If (current && options.ignores.indexOf(current) > -1) {
       continue;
     }
 

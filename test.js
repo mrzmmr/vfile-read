@@ -5,6 +5,7 @@ var clone = require('clone')
 var vfile = require('vfile')
 var mkdirp = require('mkdirp')
 var tape = require('blue-tape')
+var path = require('path')
 
 var read = require('./')
 
@@ -108,6 +109,20 @@ tape.test('using string encoding option', function (t) {
     }
   })
   t.end()
+})
+
+tape.test('using ignores option', function (t) {
+  var res = read.sync(path.join(process.cwd(), 'baz'), ['bar'])
+  var p = path.join(process.cwd(), 'baz', 'foo')
+  t.ok(res.contents.length === 1)
+  t.ok(res.contents[0].path === p)
+
+  return read(path.join(process.cwd(), 'baz'), ['bar'])
+    .then(function (file) {
+      var p = path.join(process.cwd(), 'baz', 'foo')
+      t.ok(file.contents.length === 1)
+      t.ok(file.contents[0].path === p)
+    })
 })
 
 tape.test('using array ignores option', function (t) {
