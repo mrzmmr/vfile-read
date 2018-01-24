@@ -17,7 +17,7 @@ npm i vfile-read
 
 Given:
 
-```
+```js
 ./foo
 |_ bar
   |_ foo.txt
