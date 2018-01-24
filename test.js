@@ -1,46 +1,17 @@
 'use strict'
 
 var fs = require('fs')
-var clone = require('clone')
-var vfile = require('vfile')
+var path = require('path')
 var mkdirp = require('mkdirp')
 var tape = require('blue-tape')
-var path = require('path')
 
 var read = require('./')
 
 mkdirp.sync('./foo/bar')
 fs.writeFileSync('./foo/bar/bar.txt', 'bar', 'utf-8')
 fs.writeFileSync('./foo/bar/foo.txt', 'foo', 'utf-8')
-mkdirp.sync('./baz/bar')
 mkdirp.sync('./baz/foo')
-
-var baz = vfile({
-  path: './baz',
-  contents: [
-    vfile({path: 'baz/bar', contents: []}),
-    vfile({path: 'baz/foo', contents: []})
-  ]
-})
-
-var foo = vfile({
-  path: './foo',
-  contents: [
-    vfile({
-      path: 'foo/bar',
-      contents: [
-        vfile({
-          path: 'foo/bar/bar.txt',
-          contents: 'bar'
-        }),
-        vfile({
-          path: 'foo/bar/foo.txt',
-          contents: 'foo'
-        })
-      ]
-    })
-  ]
-})
+fs.writeFileSync('./baz/bar', 'bar', 'utf-8')
 
 tape('error / reject if path does not exist', function (t) {
   read('./bar', function (err, res) {
@@ -62,121 +33,51 @@ tape('return undefined if no arguments', function (t) {
   t.end()
 })
 
-tape.test('using options', function (t) {
-  var options = {encoding: 'utf-8', ignores: ['foo/bar/bar.txt']}
-  read('./foo', options).then(function (res1) {
-    read('./foo', options, function (err, res2) {
-      if (err) {
-        t.fail(err)
-      }
-
-      try {
-        var res3 = read.sync('./foo', options)
-        var mod = clone(foo)
-        mod.contents[0].contents.splice(0, 1)
-
-        t.deepEqual(res1, mod)
-        t.deepEqual(res2, mod)
-        t.deepEqual(res3, mod)
-      } catch (err) {
-        t.fail(err)
-      }
-    })
-  }).catch(t.fail)
+tape('return undefined if no arguments', function (t) {
+  var file = read.sync()
+  t.ok(file == null)
   t.end()
 })
 
-tape.test('paths update correctly', function (t) {
-  read(path.join(process.cwd(), 'foo'), function (err, res1) {
-    t.ifError(err)
-    t.ok(res1.contents[0].path === path.join(process.cwd(), 'foo', 'bar'))
-    t.end()
+tape('using array as ignore option', function (t) {
+  return read('./baz', ['bar']).then(function (file) {
+    t.ok(file.contents.length === 1)
+  }).catch(t.threw)
+})
+
+tape('using array as ignore option sync', function (t) {
+  var file = read.sync('./baz', ['bar'])
+  t.ok(file.contents.length === 1)
+  t.ok(file.contents[0].path === 'baz/foo')
+  t.end()
+})
+
+tape('using string as encoding option sync', function (t) {
+  var file = read.sync('./baz', 'utf-8')
+  t.ok(file.contents[0].contents === 'bar')
+  t.end()
+})
+
+tape('using string as encoding option', function (t) {
+  return read('./baz', 'utf-8').then(function (file) {
+    t.ok(file.contents[0].contents === 'bar')
+  }).catch(t.threw)
+})
+
+tape('using options object', function (t) {
+  return read('./baz', {encoding: 'utf-8'}).then(function (file) {
+    t.ok(file.contents[0].contents === 'bar')
+  }).catch(t.threw)
+})
+
+tape('using no options', function (t) {
+  return read('./baz').then(function (file) {
+    t.ok(file.contents[0].contents instanceof Buffer, file.contents[0])
   })
 })
 
-tape.test('using string encoding option', function (t) {
-  read('./foo', 'utf-8', function (err, res1) {
-    if (err) {
-      t.fail(err)
-    }
-
-    try {
-      var res2 = read.sync('./foo', 'utf-8')
-      t.deepEqual(res1, foo)
-      t.deepEqual(res2, foo)
-    } catch (err) {
-      t.fail(err)
-    }
+tape('paths update correctly', function (t) {
+  return read(path.join(process.cwd(), 'foo')).then(function (file) {
+    t.ok(file.contents[0].path === path.join(process.cwd(), 'foo', 'bar'))
   })
-  t.end()
-})
-
-tape.test('using ignores option', function (t) {
-  var res = read.sync(path.join(process.cwd(), 'baz'), ['bar'])
-  var p = path.join(process.cwd(), 'baz', 'foo')
-  t.ok(res.contents.length === 1)
-  t.ok(res.contents[0].path === p)
-
-  return read(path.join(process.cwd(), 'baz'), ['bar'])
-    .then(function (file) {
-      var p = path.join(process.cwd(), 'baz', 'foo')
-      t.ok(file.contents.length === 1)
-      t.ok(file.contents[0].path === p)
-    })
-})
-
-tape.test('using array ignores option', function (t) {
-  read('./foo', ['foo/bar/bar.txt'], function (err, res1) {
-    if (err) {
-      t.fail(err)
-    }
-
-    try {
-      var res2 = read.sync('./foo', ['foo/bar/bar.txt'])
-      var mod = clone(foo)
-      mod.contents[0].contents.splice(0, 1)
-      t.deepEqual(res1, mod)
-      t.deepEqual(res2, mod)
-    } catch (err) {
-      t.fail(err)
-    }
-  })
-  t.end()
-})
-
-tape.test('no options', function (t) {
-  read('./foo').then(function (res1) {
-    read('./foo', function (err, res2) {
-      if (err) {
-        t.fail(err)
-      }
-
-      try {
-        var res3 = read.sync('./foo')
-        t.deepEqual(res1, foo)
-        t.deepEqual(res2, foo)
-        t.deepEqual(res3, foo)
-      } catch (err) {
-        t.fail(err)
-      }
-    })
-  }).catch(t.fail)
-
-  read('./baz').then(function (res1) {
-    read('./baz', function (err, res2) {
-      if (err) {
-        t.fail(err)
-      }
-
-      try {
-        var res3 = read.sync('./baz')
-        t.deepEqual(res1, baz)
-        t.deepEqual(res2, baz)
-        t.deepEqual(res3, baz)
-      } catch (err) {
-        t.fail(err)
-      }
-    })
-  }).catch(t.fail)
-  t.end()
 })
