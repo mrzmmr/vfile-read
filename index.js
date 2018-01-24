@@ -38,7 +38,6 @@ function read(location, options, callback) {
   }
 
   options.ignores = [].concat(options.ignores);
-  options.encoding = options.encoding || 'utf-8';
   ignores = options.ignores;
 
   recurse();
@@ -133,7 +132,6 @@ function readSync(location, options) {
   }
 
   options.ignores = [].concat(options.ignores);
-  options.encoding = options.encoding || 'utf-8';
   ignores = options.ignores;
 
   while (queue.length > 0) {
@@ -149,7 +147,6 @@ function readSync(location, options) {
       ignores.indexOf(current) > -1 ||
       ignores.indexOf(path.parse(current).base) > -1
     ) {
-    // If (current && options.ignores.indexOf(current) > -1) {
       continue;
     }
 
