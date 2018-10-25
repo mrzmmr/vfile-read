@@ -33,15 +33,15 @@
   "repository": "mrzmmr/vfile-read",
   "bugs": "https://github.com/mrzmmr/vfile-read/issues",
   "dependencies": {
+    "coveralls": "^3.0.2",
     "vfile": "^2.3.0"
   },
   "devDependencies": {
     "blue-tape": "^1.0.0",
     "clone": "^2.1.1",
-    "coveralls": "^3.0.0",
     "mkdirp": "^0.5.1",
-    "nyc": "^11.4.1",
+    "nyc": "^13.1.0",
     "rimraf": "^2.6.2",
-    "xo": "^0.18.2"
+    "xo": "^0.23.0"
   }
 }
