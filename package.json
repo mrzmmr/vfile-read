@@ -1,47 +1,42 @@
 {
-  "name": "vfile-read",
-  "version": "1.3.1",
-  "description": "Read file or directory into vfile.",
-  "main": "index.js",
-  "author": "Paul Zimmer",
-  "license": "MIT",
-  "scripts": {
-    "xo": "xo --fix --space --no-esnext",
-    "tape": "blue-tape test.js",
-    "report": "nyc report --reporter=text-lcov | coveralls",
-    "pretest": "npm run xo",
-    "test": "nyc npm run tape",
-    "posttest": "rimraf ./foo ./baz"
-  },
-  "nyc": {},
-  "xo": {
-    "space": true,
-    "esnext": false,
-    "ignores": [
-      "test.js"
-    ]
-  },
-  "keywords": [
-    "virtual",
-    "file",
-    "directory",
-    "readFile",
-    "readdir",
-    "path",
-    "file-path"
-  ],
-  "repository": "mrzmmr/vfile-read",
-  "bugs": "https://github.com/mrzmmr/vfile-read/issues",
-  "dependencies": {
-    "coveralls": "^3.0.2",
-    "vfile": "^2.3.0"
-  },
-  "devDependencies": {
-    "blue-tape": "^1.0.0",
-    "clone": "^2.1.1",
-    "mkdirp": "^0.5.1",
-    "nyc": "^13.1.0",
-    "rimraf": "^2.6.2",
-    "xo": "^0.23.0"
-  }
+	"name": "vfile-read",
+	"version": "1.3.1",
+	"description": "Read file or directory into vfile.",
+	"main": "index.js",
+	"author": "Paul Zimmer",
+	"license": "MIT",
+	"scripts": {
+		"xo": "xo --fix",
+		"tape": "tape test",
+		"test": "npm run xo && nyc npm run tape",
+		"report": "nyc report --reporter=text-lcov | coveralls"
+	},
+	"nyc": {
+		"statements": 100,
+		"functions": 100,
+		"branches": 100,
+		"lines": 100
+	},
+	"keywords": [
+		"virtual",
+		"file",
+		"directory",
+		"readFile",
+		"readdir",
+		"path",
+		"file-path"
+	],
+	"repository": "mrzmmr/vfile-read",
+	"bugs": "https://github.com/mrzmmr/vfile-read/issues",
+	"dependencies": {
+		"vfile": "^2.3.0"
+	},
+	"devDependencies": {
+		"coveralls": "^3.0.2",
+		"bail": "^1.0.3",
+		"clone": "^2.1.1",
+		"nyc": "^13.1.0",
+		"tape": "^4.9.2",
+		"xo": "^0.23.0"
+	}
 }
