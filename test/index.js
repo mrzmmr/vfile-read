@@ -1,8 +1,10 @@
 const {join} = require('path');
-const {test} = require('tape');
+const {test} = require('tap');
 const read = require('../lib');
 
 test('vfile-read', t => {
+	t.plan(15);
+
 	const path = join(__dirname, 'fixtures/one');
 
 	read().then(
@@ -123,6 +125,4 @@ test('vfile-read', t => {
 		join(path, 'one.txt'),
 		`should have correct path for ${path}/one.txt.`
 	);
-
-	t.end();
 });

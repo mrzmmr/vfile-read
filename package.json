@@ -7,15 +7,9 @@
 	"license": "MIT",
 	"scripts": {
 		"xo": "xo --fix",
-		"tape": "tape test",
-		"test": "npm run xo && nyc npm run tape",
+		"tap": "tap --100 -Rspec test",
+		"test": "npm run xo && npm run tap",
 		"report": "nyc report --reporter=text-lcov | coveralls"
-	},
-	"nyc": {
-		"statements": 100,
-		"functions": 100,
-		"branches": 100,
-		"lines": 100
 	},
 	"keywords": [
 		"virtual",
@@ -35,8 +29,7 @@
 	"devDependencies": {
 		"coveralls": "^3.0.2",
 		"clone": "^2.1.1",
-		"nyc": "^13.1.0",
-		"tape": "^4.9.2",
-		"xo": "^0.23.0"
+		"tap": "^12.7.0",
+		"xo": "^0.24.0"
 	}
 }
