@@ -5,10 +5,13 @@
 	"main": "lib/index.js",
 	"author": "Paul Zimmer",
 	"license": "MIT",
+	"engines": {
+		"node": ">=8"
+	},
 	"scripts": {
 		"xo": "xo --fix",
 		"tap": "tap --100 -Rspec test",
-		"test": "npm run xo && npm run tap",
+		"test": "npm run tap",
 		"report": "nyc report --reporter=text-lcov | coveralls"
 	},
 	"keywords": [
@@ -24,12 +27,12 @@
 	"bugs": "https://github.com/mrzmmr/vfile-read/issues",
 	"dependencies": {
 		"bail": "^1.0.3",
-		"vfile": "^2.3.0"
+		"vfile": "^4.0.1"
 	},
 	"devDependencies": {
-		"coveralls": "^3.0.2",
 		"clone": "^2.1.1",
-		"tap": "^12.7.0",
+		"coveralls": "^3.0.2",
+		"tap": "^14.2.3",
 		"xo": "^0.24.0"
 	}
 }
