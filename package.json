@@ -6,7 +6,7 @@
 	"author": "Paul Zimmer",
 	"license": "MIT",
 	"engines": {
-		"node": ">=8"
+		"node": ">=10"
 	},
 	"scripts": {
 		"xo": "xo --fix",
@@ -27,12 +27,12 @@
 	"bugs": "https://github.com/mrzmmr/vfile-read/issues",
 	"dependencies": {
 		"bail": "^1.0.3",
-		"vfile": "^4.0.1"
+		"vfile": "^4.2.1"
 	},
 	"devDependencies": {
 		"clone": "^2.1.1",
-		"coveralls": "^3.0.2",
-		"tap": "^14.10.7",
-		"xo": "^0.24.0"
+		"coveralls": "^3.1.0",
+		"tap": "^15.0.6",
+		"xo": "^0.39.1"
 	}
 }
